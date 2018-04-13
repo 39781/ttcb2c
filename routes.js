@@ -36,8 +36,6 @@ router.post('/botHandler',/*Authentication.SetRealm('botHandler'), Authenticatio
 		.catch((err)=>{
 			res.json(err).end();	
 		});
-		
-		res.end();
 });
 
 var easyQuote = function(reqBody){
