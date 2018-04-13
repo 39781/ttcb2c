@@ -27,6 +27,8 @@ router.post('/botHandler',/*Authentication.SetRealm('botHandler'), Authenticatio
 		var intentName = req.body.result.metadata.intentName;
 		switch(intentName){
 			case 'easyQuote':func = easyQuote;break;
+			case 'feedBackOptionsIntent':func = feedBackOptionsIntent;break;
+			case 'feedBackNoIntent':func = feedBackNoIntent; break;
 		}
 		func(req.body)
 		.then((resp)=>{
@@ -37,6 +39,34 @@ router.post('/botHandler',/*Authentication.SetRealm('botHandler'), Authenticatio
 			res.json(err).end();	
 		});
 });
+var feedBackNoIntent = function(reqBody){
+	return new Promise(function(resolve, reject){
+		resolve({		
+			"speech": "",
+			"displayText":"",
+			"followupEvent":{
+				"name":"finalIntent",
+				"data":{  
+					"finalMsg":"Okay, Thank you",					
+				}
+			}
+		});
+	});
+}
+var feedBackOptionsIntent = function(reqBody){
+	return new Promise(function(resolve, reject){
+		resolve({		
+			"speech": "",
+			"displayText":"",
+			"followupEvent":{
+				"name":"finalIntent",
+				"data":{  
+					"finalMsg":"We thank you for your valuable feedback",					
+				}
+			}
+		});
+	});
+}
 
 var easyQuote = function(reqBody){
 	return new Promise(function(resolve, reject){
