@@ -12,7 +12,15 @@ This file is part of the Innovation LAB - Offline Bot.
 define(["utils","settings"], function (utils,settings) {
 
     var methods = {};
-
+	methods.bullets = (data)=>{
+		var bulletPoints = '';
+		if(data.indexOf('>')>=0){			
+			bulletPoints = data.split('>');
+			return "<i class='material-icons' style='color: #28a745;font-weight: bold;clear:both;font-size:15px;float:left !important'>check</i>"+bulletPoints.join("<br><i class='material-icons' style='clear:both;color: #28a745;font-weight: bold;float:left !important;font-size:15px'>check</i>");			
+		}else{
+			return data;
+		}
+	}
     //User Plain Text
     methods.userplaintext = (data) => {
 
@@ -38,7 +46,7 @@ define(["utils","settings"], function (utils,settings) {
 				if(data.responseIndex){
 					html+=	`<img style="border-radius:50%;border:2px solid white;float: left;margin-right: 10px;" width="40" height="40" src='${settings.botAvatar}'/><p class="list-group-item-text-bot beforeAfter">${data.payload}</p>`;
 				}else{
-					html+=	`<img style="border-radius:50%;float: left;margin-right: 10px;" width="40" height="40" src='avatar/blank.ico'/><p class="list-group-item-text-bot">${data.payload}</p>`;
+					html+=	`<img style="border-radius:50%;float: left;margin-right: 10px;" width="40" height="40" src='avatar/blank.ico'/><p class="list-group-item-text-bot">`+methods.bullets(data.payload)+`</p>`;
 				}
                 
 				if(data.bottomIcon){
@@ -72,8 +80,8 @@ define(["utils","settings"], function (utils,settings) {
             }
 
             cardBody += `<div class="pmd-card-title">
-                <h3 class="card-body"><p class="card-title">${data.payload[i].title}</p>
-                <p class="card-subtitle">${data.payload[i].subtitle}</p>
+                <h3 class="card-body"><p class="card-title">`+methods.bullets(data.payload[i].title)+`</p>
+                <p class="card-subtitle">`+methods.bullets(data.payload[i].subtitle)+`</p>
                 </div>`
 
             if (data.buttons && data.payload[i].type == 1) {
@@ -134,8 +142,7 @@ define(["utils","settings"], function (utils,settings) {
 		quickRepliesHtml+=`</div></li>`
         return quickRepliesHtml;
     }
-	methods.quickrepliesfromapiai =(data)=>{
-        console.log(JSON.stringify(data));
+	methods.quickrepliesfromapiai =(data)=>{        
         var apiquickRepliesHtml =`<li class="list-group-item background-color-custom">
 
         <div class="media-body animated fadeInLeft">`
@@ -155,10 +162,17 @@ define(["utils","settings"], function (utils,settings) {
         for(let i in qReply){			
             if(qReply[i].platform =="facebook" && qReply[i].type == "2"){
 				if(data.responseIndex){
-					apiquickRepliesHtml+=	`<img style="border-radius:50%;border:2px solid white;float: left;margin-right: 10px;" width="40" height="40" src='${settings.botAvatar}'/><p class="list-group-item-quick-reply-space beforeAfter">${qReply[i].title}</p>`
+					apiquickRepliesHtml+=	`<img style="border-radius:50%;border:2px solid white;float: left;margin-right: 10px;" width="40" height="40" src='${settings.botAvatar}'/>`
+					if(qReply[i].title.trim().length){
+						apiquickRepliesHtml+=`<p class="list-group-item-quick-reply-space beforeAfter">${qReply[i].title}</p>`
+					}					
 				}else{
-					apiquickRepliesHtml+=	`<img style="border-radius:50%;float: left;margin-right: 10px;" width="40" height="40" src='avatar/blank.ico'/><p class="list-group-item-quick-reply-space">${qReply[i].title}</p>`
+					apiquickRepliesHtml+=	`<img style="border-radius:50%;float: left;margin-right: 10px;" width="40" height="40" src='avatar/blank.ico'/>`
+					if(qReply[i].title.trim().length){
+						apiquickRepliesHtml+=`<p class="list-group-item-quick-reply-space">${qReply[i].title}</p>`
 					}
+					
+				}
                 apiquickRepliesHtml +=`<div class="quick-replies-buttons">`
 				for(let j=0;j<qReply[i].replies.length;j++){					
 					apiquickRepliesHtml +=`<button type="button"  class="btn pmd-btn-outline pmd-ripple-effect btn-info .pmd-btn-fab apiQuickreplybtnPayload" data-apiquickRepliesPayload="${qReply[i].replies[j]}">${qReply[i].replies[j]}</button>`
@@ -184,18 +198,21 @@ define(["utils","settings"], function (utils,settings) {
             <div class="carousel-inner">`
         var index = 0;
 
-        for (let i in data.payload) {
-
+        for (let i in data.payload) {			
             if (data.payload[i].type == 1) {
+				
               if(data.action == "SampleInvoiceCarouselIntent"){
                 carousel += `<div class="item ${(index == 0) ? 'active' : ''}">
                     <div class="row">
-                        <div class="col-md-12">
-                            <a href="#" id="carousel-thumbnail-modal" class="thumbnail custom-image-wrap">
+                        <div class="col-md-12">`
+						
+						if(data.payload[i].imageUrl){							
+                         carousel+=  `<a href="#" id="carousel-thumbnail-modal" class="thumbnail custom-image-wrap">
                                 <img data-target="#center-dialog" data-toggle="modal" class="img-circle" src="${data.payload[i].imageUrl}" data-src="${data.payload[i].imageUrl}" alt="Image" style="max-width:100%;">
-                            </a>
-                            <h3 class="carousel-body"><p class="carousel-title">${data.payload[i].title}</p>
-                            <p class="carousel-subtitle">${data.payload[i].subtitle}</p>`
+                            </a>`
+						}
+                         carousel+= `<h3 class="carousel-body"><p class="carousel-title">`+methods.bullets(data.payload[i].title)+`</p>
+                            <p class="carousel-subtitle">`+methods.bullets(data.payload[i].subtitle)+`</p>`
                 if (data.buttons && data.payload[i].type == 1) {
                     for (var j = 0; j < data.payload[i].buttons.length; j++) {
                         carousel += `<button type="button" class="btn-carousel btn-info pmd-btn-outline caroselresponsepayload button-custom" data-carouselpayloadButton = "${data.payload[i].buttons[j].postback}" >${data.payload[i].buttons[j].text}</button>`
@@ -209,12 +226,14 @@ define(["utils","settings"], function (utils,settings) {
             else{
               carousel += `<div class="item ${(index == 0) ? 'active' : ''}">
                   <div class="row">
-                      <div class="col-md-12">
-                          <a href="#" class="thumbnail custom-image-wrap">
+                      <div class="col-md-12">`
+					  if(data.payload[i].imageUrl){							
+                          carousel+=`<a href="#" class="thumbnail custom-image-wrap">
                               <img class="img-circle" src="${data.payload[i].imageUrl}" alt="Image" style="max-width:100%;">
-                          </a>
-                          <h3 class="carousel-body"><p class="carousel-title">${data.payload[i].title}</p>
-                          <p class="carousel-subtitle">${data.payload[i].subtitle}</p>`
+                          </a>`
+					  }
+                      carousel+=`<h3 class="carousel-body"><p class="carousel-title">`+methods.bullets(data.payload[i].title)+`</p>
+                          <p class="carousel-subtitle">`+methods.bullets(data.payload[i].subtitle)+`</p>`
               if (data.buttons && data.payload[i].type == 1) {
                   for (var j = 0; j < data.payload[i].buttons.length; j++) {
                       carousel += `<button type="button" class="btn-carousel btn-info pmd-btn-outline caroselresponsepayload button-custom" data-carouselpayloadButton = "${data.payload[i].buttons[j].postback}" >${data.payload[i].buttons[j].text}</button>`
@@ -317,5 +336,6 @@ define(["utils","settings"], function (utils,settings) {
         
         return html;
     }
+	
     return methods;
 });

@@ -58,6 +58,17 @@ function($, config, utils, messageTpl, cards, uuidv1){
 					let isReceipt=false;
 					let receiptData=null;
 					let isLogOut=false;
+					let responsesSettings ={
+						"isCardorCarousel":[],
+						"isImage":[],
+						"isVideo":[],
+						"isQuickReplyFromApiai":[],
+						"isList":[],
+						"audioUrl":[],
+						"isFile":[],
+						"isReceipt":[],
+						"isQuickReply":[]
+					};
 					let bottomFlag = false;
 					let logoutData=null;
 					let listData=null;
@@ -83,7 +94,7 @@ function($, config, utils, messageTpl, cards, uuidv1){
 					}else{
 						if(response.result.fulfillment.messages){
 							for(let i in response.result.fulfillment.messages){
-								console.log('length',i);
+								
 								bottomFlag = false;		
 								resIndex = 1;
 								if(i>0){
@@ -92,6 +103,7 @@ function($, config, utils, messageTpl, cards, uuidv1){
 								if(i == response.result.fulfillment.messages.length-1){
 									bottomFlag = true;
 								}
+								console.log('length',i, bottomFlag);
 								console.log('resIndex',resIndex);
 								if(response.result.fulfillment.messages[i].type == 0 ){
 									let cardHTML = cards({
@@ -106,18 +118,21 @@ function($, config, utils, messageTpl, cards, uuidv1){
 									callback(null, cardHTML);
 								}
 								if(response.result.fulfillment.messages[i].type == 1){
-									count = count + 1;
-									if(count>=response.result.fulfillment.messages.length){
-										resIndex = 1;
-									}
+									count = count + 1;									
 									hasbutton=(response.result.fulfillment.messages[i].buttons.length > 0) ? true :false;
-									isCardorCarousel = true;           
+									isCardorCarousel = true;       
+									responsesSettings['isCardorCarousel'].push(resIndex);
+									responsesSettings['isCardorCarousel'].push(bottomFlag);										
 								}
 								if(response.result.fulfillment.messages[i].type == 2){
 									isQuickReplyFromApiai = true;
+									responsesSettings['isQuickReplyFromApiai'].push(resIndex);
+									responsesSettings['isQuickReplyFromApiai'].push(bottomFlag);
 								}
 								if(response.result.fulfillment.messages[i].type == 3){
 									isImage = true;
+									responsesSettings['isImage'].push(resIndex);
+									responsesSettings['isImage'].push(bottomFlag);
 								}
 								if(response.result.fulfillment.messages[i].type == 4){
 									
@@ -127,39 +142,53 @@ function($, config, utils, messageTpl, cards, uuidv1){
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.type=="video" ){
 										isVideo= true  ;
 										videoUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
+										responsesSettings['isVideo'].push(resIndex);
+										responsesSettings['isVideo'].push(bottomFlag);
 										//console.log(videoUrl);
 									}
 									
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.type=="audio" ){
-									isAudio= true ;
-									audioUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
+										isAudio= true ;
+										audioUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
 									//console.log(audioUrl);
+										responsesSettings['isAudio'].push(resIndex);
+										responsesSettings['isAudio'].push(bottomFlag);
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.type=="file" ){
-									isFile=true;
-									fileUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
+										isFile=true;
+										fileUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
+										responsesSettings['isFile'].push(resIndex);
+										responsesSettings['isFile'].push(bottomFlag);
 									//console.log(fileUrl);
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=="receipt" ){
 										isReceipt=true;
-									receiptData=response.result.fulfillment.messages[i].payload.facebook.attachment.payload;
+										receiptData=response.result.fulfillment.messages[i].payload.facebook.attachment.payload;
+										responsesSettings['isReceipt'].push(resIndex);
+										responsesSettings['isReceipt'].push(bottomFlag);
 									//console.log(isReceipt);
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=="list" ){
 										console.log('list');
 										isList=true;
 										listData=response.result.fulfillment.messages;
+										responsesSettings['isList'].push(resIndex);
+										responsesSettings['isList'].push(bottomFlag);
 									//console.log(isReceipt);
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=='logout'){
 										isLogOut=true;
 										logoutData=response.result.fulfillment.messages[i].payload.facebook.attachment.payload;
-									console.log(isLogOut);
+										console.log(isLogOut);
+										responsesSettings['isLogOut'].push(resIndex);
+										responsesSettings['isLogOut'].push(bottomFlag);
 									}
 									
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=='login'){
 										login=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.elements;
 										isLogIn=true;	
+										responsesSettings['isLogIn'].push(resIndex);
+										responsesSettings['isLogIn'].push(bottomFlag);
 									}
 									if(['button','generic'].indexOf(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type)>=0){		
 										console.log(JSON.stringify(response));
@@ -188,14 +217,15 @@ function($, config, utils, messageTpl, cards, uuidv1){
 					}
 					//Carousel
 					if(isCardorCarousel){
+						
 						if(count == 1){
 							let cardHTML = cards({
 								"payload": response.result.fulfillment.messages,
 								"senderName": config.botTitle,
 								"senderAvatar": config.botAvatar,
 								"time": utils.currentTime(),
-								"responseIndex":resIndex,
-								"bottomIcon":bottomFlag,
+								"responseIndex":responsesSettings['isCardorCarousel'][0],
+								"bottomIcon":responsesSettings['isCardorCarousel'][1],
 								"buttons":hasbutton,
 								"className": ''
 							}, "card");
@@ -207,9 +237,9 @@ function($, config, utils, messageTpl, cards, uuidv1){
 									"senderName": config.botTitle,
 									"senderAvatar": config.botAvatar,
 									"time": utils.currentTime(),
-									"responseIndex":resIndex,
-									"buttons":hasbutton,
-									"bottomIcon":bottomFlag,
+									"responseIndex":responsesSettings['isCardorCarousel'][0],
+									"bottomIcon":responsesSettings['isCardorCarousel'][1],
+									"buttons":hasbutton,									
 									"className": ''
 								
 							}, "carousel");
@@ -228,8 +258,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 								"senderName": config.botTitle,
 								"senderAvatar": config.botAvatar,
 								"time": utils.currentTime(),
-								"responseIndex":resIndex,
-								"bottomIcon":bottomFlag,
+								"responseIndex":responsesSettings['isQuickReply'][0],
+								"bottomIcon":responsesSettings['isQuickReply'][1],
 								"className": ''
 						}, "quickreplies");
 						callback(null, cardHTML);
@@ -241,8 +271,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 								"senderName": config.botTitle,
 								"senderAvatar": config.botAvatar,
 								"time": utils.currentTime(),
-								"bottomIcon":bottomFlag,
-								"responseIndex":resIndex,
+								"responseIndex":responsesSettings['isQuickReplyFromApiai'][0],
+								"bottomIcon":responsesSettings['isQuickReplyFromApiai'][1],
 								"className": ''
 						}, "quickreplyfromapiai");
 						callback(null, cardHTML);
@@ -253,8 +283,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 								"senderName": config.botTitle,
 								"senderAvatar": config.botAvatar,
 								"time": utils.currentTime(),
-								"responseIndex":resIndex,
-								"bottomIcon":bottomFlag,
+								"responseIndex":responsesSettings['isVideo'][0],
+								"bottomIcon":responsesSettings['isVideo'][1],
 								"className": ''
 						}, "video");
 						callback(null, cardHTML);
@@ -265,8 +295,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 								"senderName": config.botTitle,
 								"senderAvatar": config.botAvatar,
 								"time": utils.currentTime(),
-								"bottomIcon":bottomFlag,
-								"responseIndex":resIndex,
+								"responseIndex":responsesSettings['isAudio'][0],
+								"bottomIcon":responsesSettings['isAudio'][1],
 								"className": ''
 						}, "audio");
 						callback(null, cardHTML);
@@ -277,8 +307,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 								"senderName": config.botTitle,
 								"senderAvatar": config.botAvatar,
 								"time": utils.currentTime(),
-								"bottomIcon":bottomFlag,
-								"responseIndex":resIndex,
+								"responseIndex":responsesSettings['isFile'][0],
+								"bottomIcon":responsesSettings['isFile'][1],
 								"className": ''
 						}, "file");
 						callback(null, cardHTML);
@@ -289,8 +319,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 							"payload": listData,
 							"senderName": config.botTitle,
 							"senderAvatar": config.botAvatar,
-							"responseIndex":resIndex,
-							"bottomIcon":bottomFlag,
+							"responseIndex":responsesSettings['isList'][0],
+							"bottomIcon":responsesSettings['isList'][1],
 							"time": utils.currentTime(),
 							"className": ''
 						}, "list");
@@ -300,10 +330,10 @@ function($, config, utils, messageTpl, cards, uuidv1){
 						let cardHTML = cards({
 							"payload": receiptData,
 							"senderName": config.botTitle,
-							"senderAvatar": config.botAvatar,
-							"responseIndex":resIndex,
+							"senderAvatar": config.botAvatar,							
 							"time": utils.currentTime(),
-							"bottomIcon":bottomFlag,
+							"responseIndex":responsesSettings['isReceipt'][0],
+							"bottomIcon":responsesSettings['isReceipt'][1],
 							"className": ''
 						}, "receipt");
 						callback(null, cardHTML);
@@ -315,8 +345,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 							"senderName": config.botTitle,
 							"senderAvatar": config.botAvatar,
 							"time": utils.currentTime(),
-							"responseIndex":resIndex,
-							"bottomIcon":bottomFlag,
+							"responseIndex":responsesSettings['isLogOut'][0],
+							"bottomIcon":responsesSettings['isLogOut'][1],
 							"className": '',
 							"isWeb":$('#webchat').context.URL
 						}, "logout");
@@ -326,11 +356,11 @@ function($, config, utils, messageTpl, cards, uuidv1){
 						console.log("ISWEB:::"+$('#webchat').context.URL);
 						let cardHTML = cards({
 							"payload": webviewData,							
-							"senderName": config.botTitle,
-							"responseIndex":resIndex,
+							"senderName": config.botTitle,							
 							"senderAvatar": config.botAvatar,
-							"time": utils.currentTime(),
-							"bottomIcon":bottomFlag,
+							"time": utils.currentTime(),	
+							"responseIndex":responsesSettings['isWebView'][0],
+							"bottomIcon":responsesSettings['isWebView'][1],
 							"className": '',
 							"isWeb":$('#webchat').context.URL
 						}, "webview");
@@ -342,8 +372,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 							"payload": login,
 							"senderName": config.botTitle,
 							"senderAvatar": config.botAvatar,
-							"bottomIcon":bottomFlag,
-							"responseIndex":resIndex,
+							"responseIndex":responsesSettings['isLogIn'][0],
+							"bottomIcon":responsesSettings['isLogIn'][1],
 							"time": utils.currentTime(),
 							"className": '',
 							"isWeb":$('#webchat').context.URL

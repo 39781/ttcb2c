@@ -23,24 +23,26 @@ define(['messageTemplates', 'uuid'], function(messageTpl, uuidv1){
             }
 
             if(this.responseType == "card"){
-                console.log(JSON.stringify(this.data));
+                console.log(this.data);
                 return messageTpl.card(this.data);
             }
 			if(this.responseType == "list"){
-                console.log(JSON.stringify(this.data));
+                console.log(this.data);
                 return messageTpl.list(this.data);
             }
             if(this.responseType == "carousel"){
-				console.log(JSON.stringify(this.data));
+				console.log(this.data);
                 return messageTpl.carousel(this.data, uuidv1());
             }
 			if(this.responseType == "webview"){
                 return messageTpl.webview(this.data, uuidv1());
             }
 			if (this.responseType == "quickreplyfromapiai") {
+				console.log(this.data);
 				return messageTpl.quickrepliesfromapiai(this.data);
 			}
             if(this.responseType == "quickreplies"){
+				console.log(this.data);
                 return messageTpl.quickreplies(this.data);
             }
             if(this.responseType == "video"){
