@@ -121,18 +121,18 @@ function($, config, utils, messageTpl, cards, uuidv1){
 									count = count + 1;									
 									hasbutton=(response.result.fulfillment.messages[i].buttons.length > 0) ? true :false;
 									isCardorCarousel = true;       
-									responsesSettings['isCardorCarousel'].push(resIndex);
-									responsesSettings['isCardorCarousel'].push(bottomFlag);										
+									responsesSettings['isCardorCarousel'][0]=resIndex;
+									responsesSettings['isCardorCarousel'][1]=bottomFlag;										
 								}
 								if(response.result.fulfillment.messages[i].type == 2){
 									isQuickReplyFromApiai = true;
-									responsesSettings['isQuickReplyFromApiai'].push(resIndex);
-									responsesSettings['isQuickReplyFromApiai'].push(bottomFlag);
+									responsesSettings['isQuickReplyFromApiai'][0]=resIndex;
+									responsesSettings['isQuickReplyFromApiai'][1]=bottomFlag;
 								}
 								if(response.result.fulfillment.messages[i].type == 3){
 									isImage = true;
-									responsesSettings['isImage'].push(resIndex);
-									responsesSettings['isImage'].push(bottomFlag);
+									responsesSettings['isImage'][0]=resIndex;
+									responsesSettings['isImage'][1]=bottomFlag;
 								}
 								if(response.result.fulfillment.messages[i].type == 4){
 									
@@ -142,8 +142,8 @@ function($, config, utils, messageTpl, cards, uuidv1){
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.type=="video" ){
 										isVideo= true  ;
 										videoUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
-										responsesSettings['isVideo'].push(resIndex);
-										responsesSettings['isVideo'].push(bottomFlag);
+										responsesSettings['isVideo'][0]=resIndex;
+										responsesSettings['isVideo'][1]=bottomFlag;
 										//console.log(videoUrl);
 									}
 									
@@ -151,44 +151,44 @@ function($, config, utils, messageTpl, cards, uuidv1){
 										isAudio= true ;
 										audioUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
 									//console.log(audioUrl);
-										responsesSettings['isAudio'].push(resIndex);
-										responsesSettings['isAudio'].push(bottomFlag);
+										responsesSettings['isAudio'][0]=resIndex;
+										responsesSettings['isAudio'][1]=bottomFlag;
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.type=="file" ){
 										isFile=true;
 										fileUrl=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.url;
-										responsesSettings['isFile'].push(resIndex);
-										responsesSettings['isFile'].push(bottomFlag);
+										responsesSettings['isFile'][0]=resIndex;
+										responsesSettings['isFile'][1]=bottomFlag;
 									//console.log(fileUrl);
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=="receipt" ){
 										isReceipt=true;
 										receiptData=response.result.fulfillment.messages[i].payload.facebook.attachment.payload;
-										responsesSettings['isReceipt'].push(resIndex);
-										responsesSettings['isReceipt'].push(bottomFlag);
+										responsesSettings['isReceipt'][0]=resIndex;
+										responsesSettings['isReceipt'][1]=bottomFlag;
 									//console.log(isReceipt);
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=="list" ){
 										console.log('list');
 										isList=true;
 										listData=response.result.fulfillment.messages;
-										responsesSettings['isList'].push(resIndex);
-										responsesSettings['isList'].push(bottomFlag);
+										responsesSettings['isList'][0]=resIndex;
+										responsesSettings['isList'][1]=bottomFlag;
 									//console.log(isReceipt);
 									}
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=='logout'){
 										isLogOut=true;
 										logoutData=response.result.fulfillment.messages[i].payload.facebook.attachment.payload;
 										console.log(isLogOut);
-										responsesSettings['isLogOut'].push(resIndex);
-										responsesSettings['isLogOut'].push(bottomFlag);
+										responsesSettings['isLogOut'][0]=resIndex;
+										responsesSettings['isLogOut'][1]=bottomFlag;
 									}
 									
 									if(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type=='login'){
 										login=response.result.fulfillment.messages[i].payload.facebook.attachment.payload.elements;
 										isLogIn=true;	
-										responsesSettings['isLogIn'].push(resIndex);
-										responsesSettings['isLogIn'].push(bottomFlag);
+										responsesSettings['isLogIn'][0]=resIndex;
+										responsesSettings['isLogIn'][1]=bottomFlag;
 									}
 									if(['button','generic'].indexOf(response.result.fulfillment.messages[i].payload.facebook.attachment.payload.template_type)>=0){		
 										console.log(JSON.stringify(response));
