@@ -118,7 +118,10 @@ function($, config, utils, messageTpl, cards, uuidv1){
 									callback(null, cardHTML);
 								}
 								if(response.result.fulfillment.messages[i].type == 1){
-									count = count + 1;									
+									count = count + 1;
+									if(count ==	response.result.fulfillment.messages.length){
+										resIndex=1;
+									}										
 									hasbutton=(response.result.fulfillment.messages[i].buttons.length > 0) ? true :false;
 									isCardorCarousel = true;       
 									responsesSettings['isCardorCarousel'][0]=resIndex;
@@ -217,7 +220,7 @@ function($, config, utils, messageTpl, cards, uuidv1){
 					}
 					//Carousel
 					if(isCardorCarousel){
-						
+						console.log(responsesSettings['isCardorCarousel']);
 						if(count == 1){
 							let cardHTML = cards({
 								"payload": response.result.fulfillment.messages,
