@@ -14,7 +14,7 @@ define({
     applicationTitle: "TTCB2C",
     userTitle : "Me",
     botTitle : "TTC-B2C",
-    botAvatar : "avatar/B2C.jpg",
+    botAvatar : "avatar/B2C.png",
     userAvatar : "avatar/user.png",
     attachmentUploadURL : "",
     platform : "facebook",
