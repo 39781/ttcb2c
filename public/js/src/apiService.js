@@ -35,12 +35,12 @@ function($, config, utils, messageTpl, cards, uuidv1){
 			console.log(userInput);
 			$.ajax({
 				type: "POST",
-				url: config.chatServerURL + "query?v=20150910",
+				url: config.chatServerURL,
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
-				headers: {
+				/*headers: {
 					"Authorization": "Bearer " + config.accessToken
-				},
+				},*/
 				data: JSON.stringify(this.options),
 				success: function(response) {
 					let isCardorCarousel = false;

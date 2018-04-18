@@ -1,10 +1,10 @@
 var express 		= require('express');
 var router			= express.Router();	 
-
+var request			= require('request');	
 var fs 				= require("fs");	
 var request			= require('request');
 var path			= require("path");	
-
+var config 			= require("./config");	
 
 //var Authentication = require('./utilities/Authentication');
 
@@ -19,7 +19,24 @@ router.get('/chat', function(req, res) {
   res.redirect('/chat.html');
 });
 
-
+router.post('/dialogflowAPI',function(req, res){
+	var options = { 
+		method: 'POST',
+		url: config.dialogflowAPI,
+		headers: {
+			"Authorization": "Bearer " + config.accessToken
+		},
+		body:req.body,			
+		json: true 
+	}; 			
+	request(options, function (error, response, body) {
+		if(error){
+			res.json({error:"error in chat server api call"}).end();
+		}else{			
+			res.json(body).end();
+		}		
+	});			
+})
 router.post('/botHandler',/*Authentication.SetRealm('botHandler'), Authentication.BasicAuthentication, */function(req, res){
 	//console.log('Dialogflow Request headers: ' + JSON.stringify(req.headers));
 	console.log('Dialogflow Request body: ' + JSON.stringify(req.body));	
