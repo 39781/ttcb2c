@@ -144,7 +144,7 @@ html,body{
 .custom-image-wrap {
   display: block;
     padding: 4px;
-    margin-bottom: -5%;
+    margin-bottom: 2%;
     line-height: 1.42857143;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -182,8 +182,15 @@ html,body{
   font-weight: 0%;
   margin: 2% 2% 0% -4%;
 }
-
-.btn-carousel {
+.btn-carousel{
+	min-width: 86%;
+    padding: 2% 3%;
+    margin: 3% 0% 2% -43%;
+    border-radius: 5px;
+    bottom: 0px !important;
+    position: absolute;
+}
+.btn-carousel11 {
   min-width: 96%;
   padding: 2% 3%;
   margin: 3% 0% -2% 2%;
@@ -364,12 +371,18 @@ html,body{
   background-color: transparent;
   border: solid 1px #333;
   text-transform: none;
-  outline: none;
+	outline: none;
+	font-weight:bold;
+}
+.commonHeight{
+	border-radius: 0px 0px 15px 15px;
+	height:200px;	
+	background-color: white;
 }
 .disabled{
-  color: #eae6e6 !important;
-    background-color: #4e4e4e !important;
-    border: solid 1px #5d5a5a !important;
+      color: #fff !important;
+    background-color: #eb2542 !important;
+    border: solid 1px #333!important;
 }
 
 .pmd-btn-outline.btn-info:hover, .pmd-btn-outline.btn-info:focus {
