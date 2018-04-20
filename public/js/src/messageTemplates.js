@@ -169,11 +169,11 @@ define(["utils","settings"], function (utils,settings) {
 				}else{
 					//apiquickRepliesHtml+=	`<img style="border-radius:50%;float: left;margin-right: 10px;" width="40" height="40" src='avatar/blank.ico'/>`
 					if(qReply[i].title.trim().length){
-						apiquickRepliesHtml+=`<p class="list-group-item-quick-reply-space">${qReply[i].title}</p>`
+						apiquickRepliesHtml+=`<img style="border-radius:50%;float: left;margin-right: 10px;" width="40" height="40" src='avatar/blank.ico'/><p class="list-group-item-quick-reply-space">${qReply[i].title}</p>`
 					}
 					
 				}
-                apiquickRepliesHtml +=`<div class="quick-replies-buttons" style="display: inline-block;align-items: center;justify-content: center;">`
+                apiquickRepliesHtml +=`<div class="quick-replies-buttons" style="align-items: center;justify-content: center;">`
 				for(let j=0;j<qReply[i].replies.length;j++){
 					if(settings.eventAllow.indexOf(qReply[i].replies[j])>=0){	
 						apiquickRepliesHtml +=`<button type="button"  class="btn pmd-btn-outline pmd-ripple-effect btn-info .pmd-btn-fab apiQuickreplybtnPayload" data-apiquickRepliesPayload="${qReply[i].replies[j]}">${qReply[i].replies[j]}</button>`

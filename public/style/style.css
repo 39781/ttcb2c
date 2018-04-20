@@ -297,7 +297,7 @@ html,body{
      color: #f5f5f5;
      font-size: .875rem;
      overflow-wrap: break-word;
-     background-color: #eb2542;
+     background-color: #b11116;
      max-width: 75%;
      border-radius: 10px;
      display: inline-block;
@@ -355,7 +355,7 @@ html,body{
   color: #f5f5f5;
   font-size: .875rem;
   overflow-wrap: break-word;
-  background-color: #eb2542;
+  background-color: #b11116;
   max-width: 75%;
   border-radius: 10px;
   display: inline-block;
@@ -370,7 +370,7 @@ html,body{
 }
 
 .pmd-btn-outline.btn-info{
-  color: #eb2542;
+  color: #b11116;
   background-color: transparent;
   border: solid 1px #333;
   text-transform: none;
@@ -383,14 +383,14 @@ html,body{
 }
 .disabled{
       color: #fff !important;
-    background-color: #eb2542 !important;
+    background-color: #b11116 !important;
     border: solid 1px #333!important;
 }
 
 .pmd-btn-outline.btn-info:hover, .pmd-btn-outline.btn-info:focus {
   color: #fff;
-  background-color: #eb2542;
-  border: solid 1px #eb2542;
+  background-color: #b11116;
+  border: solid 1px #b11116;
 }
 
 .carousel-control {
@@ -552,7 +552,7 @@ img.center {
   border-left-color: #333;*/
   
   right: 100%;
-    border-right-color: #eb2542 !important;
+    border-right-color: #b11116 !important;
 }
 
 .beforeAfter::after,.beforeAfter:before {
