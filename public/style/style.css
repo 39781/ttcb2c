@@ -158,15 +158,18 @@ html,body{
 }
 
 .carousel-title {
-  font-size: 105%;
+  font-size: 95%;
   font-weight: bold;
-  margin: 2% 2% 0% 2%
+  margin: 2% 2% 0% 2%;
+  height:30px;
 }
 
 .carousel-subtitle {
   font-size: 85%;
   font-weight: 0%;
   margin: 2% 2% 3% 2%;
+  overflow-y:auto;
+  height:180px;
 }
 
 .card-title {
@@ -375,9 +378,8 @@ html,body{
 	font-weight:bold;
 }
 .commonHeight{
-	border-radius: 0px 0px 15px 15px;
-	height:200px;	
-	background-color: white;
+	height:250px;	
+	background-color: white;	
 }
 .disabled{
       color: #fff !important;
