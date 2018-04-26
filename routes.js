@@ -34,11 +34,10 @@ router.post('/dialogflowAPI',function(req, res){
 		if(error){
 			res.json({error:"error in chat server api call"}).end();
 		}else{			
-			if(body.result.metadata.intentName=='ownFlightsNo-yes'){
+			if(body.result.metadata.intentName=='easyQuote'){
 				body.result.contexts.forEach(function(context){
 					if(context.name == 'easyquote-followup'){	
-						conf = JSON.parse(JSON.stringify(config));
-						
+						conf = JSON.parse(JSON.stringify(config));						
 						mail.sendMail(context.parameters.email, conf.mailContent, conf.mailAttachments);
 					}
 				});
