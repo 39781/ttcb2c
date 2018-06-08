@@ -30,10 +30,12 @@ router.post('/dialogflowAPI',function(req, res){
 		body:req.body,			
 		json: true 
 	}; 			
+	console.log(req.body);
 	request(options, function (error, response, body) {
 		if(error){
 			res.json({error:"error in chat server api call"}).end();
-		}else{			
+		}else{
+				console.log(body.result.metadata.intentName);
 			if(body.result.metadata.intentName=='easyQuote'){
 				body.result.contexts.forEach(function(context){
 					if(context.name == 'easyquote-followup'){	
